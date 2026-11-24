@@ -9,7 +9,7 @@
       <span class="badge badge-<%= PRIORIDADES[ticket.prioridade].cor %>"><%= PRIORIDADES[ticket.prioridade].label %></span>
     </div>
     <h1><%= ticket.titulo %></h1>
-    <p class="subtitle">Aberto <%= timeAgo(ticket.createdAt) %> por <strong><%= ticket.solicitante %></strong></p>
+    <p class="subtitle">Aberto <%= timeAgo(ticket.createdAt) %> por <strong><%= ticket.autorNome || ticket.solicitante %></strong><% if (ticket.autorEmail) { %> <span class="muted">(<%= ticket.autorEmail %>)</span><% } %></p>
   </div>
   <div class="header-actions">
     <a href="/tickets/<%= ticket.id %>/edit" class="btn btn-secondary" id="ticket-edit"><%- icon('edit', 16) %> Editar</a>
@@ -51,7 +51,7 @@
       <form method="POST" action="/tickets/<%= ticket.id %>/comments" class="comment-form" id="comment-form">
         <div class="field">
           <label for="autor">Seu nome</label>
-          <input type="text" id="autor" name="autor" placeholder="Ex.: Ana Souza" required list="autores">
+          <input type="text" id="autor" name="autor" value="<%= user.nome %>" placeholder="Ex.: Ana Souza" required list="autores">
           <datalist id="autores">
             <% tecnicos.forEach(function (t) { %><option value="<%= t.nome %>"><% }) %>
             <option value="<%= ticket.solicitante %>">
@@ -111,6 +111,10 @@
         <div><dt>Responsável</dt><dd>
           <% if (ticket.tecnico) { %><span class="person"><span class="avatar avatar-sm"><%= ticket.tecnico.iniciais %></span><%= ticket.tecnico.nome %></span><% } else { %><span class="muted">Não atribuído</span><% } %>
         </dd></div>
+        <% if (ticket.uid) { %>
+          <div><dt><%- icon('user', 14) %> Aberto por</dt><dd><%= ticket.autorNome %><br><span class="muted"><%= ticket.autorEmail %></span></dd></div>
+          <div><dt>UID</dt><dd><code class="uid"><%= ticket.uid %></code></dd></div>
+        <% } %>
         <div><dt><%- icon('user', 14) %> Solicitante</dt><dd><%= ticket.solicitante %></dd></div>
         <% if (ticket.emailSolicitante) { %>
           <div><dt><%- icon('mail', 14) %> E-mail</dt><dd><a href="mailto:<%= ticket.emailSolicitante %>"><%= ticket.emailSolicitante %></a></dd></div>

@@ -3,11 +3,16 @@ const express = require('express');
 const methodOverride = require('method-override');
 const { sequelize } = require('./models');
 const routes = require('./routes');
+const authRoutes = require('./routes/auth');
 const locals = require('./middlewares/locals');
+const { loadUser, requireAuth } = require('./middlewares/auth');
 const seed = require('./seeders/seed');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// necessário no Render por causa do HTTPS
+app.set('trust proxy', 1);
 
 // View engine
 app.set('view engine', 'ejs');
@@ -18,8 +23,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method')); // permite PUT/PATCH/DELETE via formulários (?_method=PUT)
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(locals);
+app.use(loadUser);
 
-// Rotas
+// login liberado, o resto precisa estar logado
+app.use(authRoutes);
+app.use(requireAuth);
 app.use(routes);
 
 // 404

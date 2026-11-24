@@ -9,7 +9,7 @@ exports.create = async (req, res) => {
   try {
     await Comment.create({
       ticketId: ticket.id,
-      autor: (req.body.autor || '').trim(),
+      autor: (req.body.autor || '').trim() || req.user.nome,
       mensagem: (req.body.mensagem || '').trim(),
       tipo: 'comentario',
     });

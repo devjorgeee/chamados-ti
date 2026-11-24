@@ -12,6 +12,7 @@
         <tr>
           <th>Protocolo</th>
           <th>Chamado</th>
+          <th>Aberto por</th>
           <th>Categoria</th>
           <th>Prioridade</th>
           <th>Status</th>
@@ -26,6 +27,14 @@
             <td class="cell-main">
               <a href="/tickets/<%= t.id %>"><strong><%= t.titulo %></strong></a>
               <span class="muted"><%= t.solicitante %><%= t.setor ? ' · ' + t.setor : '' %></span>
+            </td>
+            <td class="cell-author">
+              <% if (t.uid) { %>
+                <strong><%= t.autorNome %></strong>
+                <span class="muted"><%= t.autorEmail %></span>
+              <% } else { %>
+                <span class="muted" title="Chamado de exemplo, criado antes do login"><%= t.solicitante %></span>
+              <% } %>
             </td>
             <td>
               <% if (t.categoria) { %>

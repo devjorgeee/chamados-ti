@@ -29,6 +29,21 @@
       </nav>
 
       <a href="/tickets/new" class="btn btn-primary btn-block sidebar-cta" id="sidebar-new-ticket"><%- icon('plus') %> Novo chamado</a>
+
+      <% if (user) { %>
+        <div class="user-box" id="user-box">
+          <% if (user.foto) { %>
+            <img class="avatar avatar-photo" src="<%= user.foto %>" alt="" referrerpolicy="no-referrer">
+          <% } else { %>
+            <span class="avatar"><%= user.nome.slice(0, 2).toUpperCase() %></span>
+          <% } %>
+          <div class="user-info">
+            <strong id="user-name" title="<%= user.nome %>"><%= user.nome %></strong>
+            <span id="user-email" title="<%= user.email %>"><%= user.email %></span>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm user-logout" id="logout-btn" title="Sair da conta"><%- icon('logout', 16) %><span>Sair</span></button>
+        </div>
+      <% } %>
     </aside>
 
     <main class="main">

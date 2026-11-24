@@ -71,7 +71,7 @@ exports.index = async (req, res) => {
 exports.new = async (req, res) => {
   res.render('tickets/form', {
     title: 'Novo chamado',
-    ticket: { prioridade: 'media', status: 'aberto' },
+    ticket: { prioridade: 'media', status: 'aberto', solicitante: req.user.nome, emailSolicitante: req.user.email },
     errors: [],
     isEdit: false,
     ...(await formOptions()),
@@ -82,12 +82,21 @@ exports.new = async (req, res) => {
 exports.create = async (req, res) => {
   const data = pickTicket(req.body);
   try {
-    const ticket = await Ticket.create(data);
+    // dados de quem abriu o chamado
+    const ticket = await Ticket.create({
+      ...data,
+      uid: req.user.uid,
+      autorEmail: req.user.email,
+      autorNome: req.user.nome,
+    });
     await Comment.create({
       ticketId: ticket.id,
       autor: 'Sistema',
       tipo: 'sistema',
-      mensagem: `Chamado aberto por ${ticket.solicitante}.`,
+      mensagem:
+        ticket.solicitante === ticket.autorNome
+          ? `Chamado aberto por ${ticket.autorNome} (${ticket.autorEmail}).`
+          : `Chamado aberto por ${ticket.autorNome} (${ticket.autorEmail}) em nome de ${ticket.solicitante}.`,
     });
     res.redirect(`/tickets/${ticket.id}?msg=${encodeURIComponent(`Chamado ${ticket.protocolo} criado com sucesso!`)}`);
   } catch (err) {
