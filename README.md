@@ -1,5 +1,6 @@
-**Aluno:** Jorge Lucas Cruz Barbosa De Oliveira  
-**Aplicação publicada (Render):** https://chamados-ti-jorge-oliveira.onrender.com
+**Nome completo do aluno:** Jorge Lucas Cruz Barbosa De Oliveira
+
+**Link da aplicação no Render:** [https://chamados-ti-jorge-oliveira.onrender.com](https://chamados-ti-jorge-oliveira.onrender.com)
 
 # HelpDesk TI — Organização de Chamados
 
